@@ -20,6 +20,13 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.bulenkov/darcula -->
+		<dependency>
+		    <groupId>com.bulenkov</groupId>
+		    <artifactId>darcula</artifactId>
+		    <version>2018.2</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<java.version>1.7</java.version>

@@ -7,6 +7,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import br.com.aewinformatica.springbootswing.repository.PessoaRepository;
 import br.com.aewinformatica.springbootswing.ui.MDIApplication;
+import br.com.aewinformatica.springbootswing.util.LookAndFeelUtils;
 
 @SpringBootApplication
 public class Application {
@@ -15,6 +16,8 @@ public class Application {
 	PessoaRepository pessoaRepository;
 	
 	public static void main(String[] args) {
+		
+		LookAndFeelUtils.setWindowsLookAndFeel();
 
 		ConfigurableApplicationContext context = new SpringApplicationBuilder(
 				Application.class).headless(false).run(args);
