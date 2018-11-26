@@ -3,12 +3,16 @@ package br.com.aewinformatica.springbootswing.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -18,7 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.aewinformatica.springbootswing.model.Pais;
-import javax.swing.JLabel;
+import br.com.aewinformatica.springbootswing.util.LocaleUtils;
+import java.awt.event.ItemListener;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.awt.event.ItemEvent;
+import javax.swing.JTextField;
 
 
 @Component
@@ -37,20 +46,33 @@ public class MDIApplication extends javax.swing.JFrame {
     private JComboBox<String> comboPaises;
     private DefaultComboBoxModel<String> defaultComboBoxModel;
     private List<Pais>listaPaises = new ArrayList<Pais>();
+   
+    private String TITLE_MAIN_MENU;
+    private ResourceBundle rb;
 
 	@Autowired 
 	PessoaUI pessoaUI;
+	private JTextField TF_numero;
+	private JTextField TF_moeda;
+	private JTextField TF_data;
 	
     /**
      * Creates new form MDIApplication
      */
     public MDIApplication() {
+    	
+    	rb = LocaleUtils.getRb();
+    	TITLE_MAIN_MENU = rb.getString("title.MAIN");
+    	
         initComponents();
     }
 
 
     private void initComponents() {
-    	setTitle("Controle de Pessoal");
+
+    	
+
+    	setTitle(TITLE_MAIN_MENU);
     	
     	
         desktopPane = new JDesktopPane();
@@ -103,7 +125,30 @@ public class MDIApplication extends javax.swing.JFrame {
         setJMenuBar(menuBar);
         
         comboPaises = new JComboBox<String>();
-        comboPaises.setBounds(21, 76, 117, 20);
+        comboPaises.addItemListener(new ItemListener() {
+        	public void itemStateChanged(ItemEvent e) {
+        		
+				//indice
+				int index = comboPaises.getSelectedIndex();
+				String []pais = listaPaises.get(index).getCodigo().split("-");
+				//Criando Locale
+				Locale locale = new Locale(pais[0],pais[1]);
+				
+				//formatando Numero
+				int numero=1234567;
+				NumberFormat numeroFormatado = NumberFormat.getNumberInstance(locale); 
+				TF_numero.setText(numeroFormatado.format(numero));
+				
+				//formatando Moeda
+				NumberFormat numeroFormatadoMoeda = NumberFormat.getCurrencyInstance(locale);
+				TF_moeda.setText(numeroFormatadoMoeda.format(numero));
+				
+				//formatanado Data
+				DateFormat df = DateFormat.getDateInstance(DateFormat.FULL,locale);
+				TF_data.setText(df.format(new Date()));
+        	}
+        });
+        comboPaises.setBounds(102, 93, 117, 20);
         preencherPaises();
         desktopPane.add(comboPaises);
 
@@ -119,8 +164,23 @@ public class MDIApplication extends javax.swing.JFrame {
         );
         
         JLabel lblPais = new JLabel("Pais");
-        lblPais.setBounds(21, 60, 46, 14);
+        lblPais.setBounds(103, 68, 46, 14);
         desktopPane.add(lblPais);
+        
+        TF_numero = new JTextField();
+        TF_numero.setBounds(102, 124, 86, 20);
+        desktopPane.add(TF_numero);
+        TF_numero.setColumns(10);
+        
+        TF_moeda = new JTextField();
+        TF_moeda.setBounds(102, 155, 86, 20);
+        desktopPane.add(TF_moeda);
+        TF_moeda.setColumns(10);
+        
+        TF_data = new JTextField();
+        TF_data.setBounds(29, 186, 286, 20);
+        desktopPane.add(TF_data);
+        TF_data.setColumns(10);
         
   
         

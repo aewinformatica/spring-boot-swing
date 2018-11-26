@@ -44,7 +44,7 @@ public class PessoaUI extends JFrame {
         jBtnAdicionar.setText("Adicicionar");
         comboBoxPessoa = new JComboBox<String>();
 
-        preencherCombo();
+    
 
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
@@ -74,7 +74,8 @@ public class PessoaUI extends JFrame {
 			        			.addComponent(comboBoxPessoa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 			        			.addContainerGap(221, Short.MAX_VALUE))
         );
-			        
+			     
+			        preencherCombo();	        
         getContentPane().setLayout(layout);
 
         pack();
