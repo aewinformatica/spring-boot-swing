@@ -1,19 +1,35 @@
 package br.com.aewinformatica.springbootswing.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.aewinformatica.springbootswing.model.Pessoa;
 import br.com.aewinformatica.springbootswing.repository.PessoaRepository;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
 
 
 @Component
-public class PessoaUI extends javax.swing.JFrame {
+public class PessoaUI extends JFrame {
+	
+    // Variables declaration
+    private JButton jBtnAdicionar;
+    private JComboBox<String> comboBoxPessoa;
+    private DefaultComboBoxModel<String> defaultComboBoxModel;
+
+    // End of variables declaration
 	
 
 	private static final long serialVersionUID = 1L;
@@ -33,41 +49,59 @@ public class PessoaUI extends javax.swing.JFrame {
 
     private void initComponents() {
 
-        jBtnAdicionar = new javax.swing.JButton();
+        jBtnAdicionar = new JButton();
+        comboBoxPessoa = new JComboBox<String>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        preencherCombo();
+
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         jBtnAdicionar.setText("Adicicionar");
-        jBtnAdicionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jBtnAdicionar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        
+        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jBtnAdicionar)
-                .addContainerGap(278, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(50)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(comboBoxPessoa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(jBtnAdicionar))
+        			.addContainerGap(278, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jBtnAdicionar)
-                .addContainerGap(259, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(jBtnAdicionar)
+        			.addGap(18)
+        			.addComponent(comboBoxPessoa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(221, Short.MAX_VALUE))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }
+    
+    private void preencherCombo() {
+    	
+    	defaultComboBoxModel = new DefaultComboBoxModel<String>();
+    	defaultComboBoxModel.addElement("Jose");
+    	defaultComboBoxModel.addElement("Joao");
+    	
+    comboBoxPessoa.setModel(defaultComboBoxModel);
+    }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        Pessoa pessoa = new Pessoa("AewInformatica", new Date());
+    private void jButton1ActionPerformed(ActionEvent evt) {
+        Pessoa pessoa = new Pessoa(comboBoxPessoa.getSelectedItem().toString(), new Date());
     	pessoaRepository.save(pessoa);
-    	List<Pessoa> pessoaEncontrada = pessoaRepository.findByNome("AewInformatica");
+    	List<Pessoa> pessoaEncontrada = pessoaRepository.findByNome(comboBoxPessoa.getSelectedItem().toString());
     	JOptionPane.showMessageDialog(rootPane, pessoaEncontrada);
     }
 
@@ -103,8 +137,4 @@ public class PessoaUI extends javax.swing.JFrame {
             }
         });
     }
-
-    // Variables declaration
-    private javax.swing.JButton jBtnAdicionar;
-    // End of variables declaration
 }
