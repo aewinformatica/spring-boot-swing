@@ -2,8 +2,12 @@ package br.com.aewinformatica.springbootswing.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
+import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -12,6 +16,9 @@ import javax.swing.WindowConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import br.com.aewinformatica.springbootswing.model.Pais;
+import javax.swing.JLabel;
 
 
 @Component
@@ -27,6 +34,9 @@ public class MDIApplication extends javax.swing.JFrame {
     private JMenu helpMenu;
     private JMenuBar menuBar;
     private JMenuItem openMenuItem;
+    private JComboBox<String> comboPaises;
+    private DefaultComboBoxModel<String> defaultComboBoxModel;
+    private List<Pais>listaPaises = new ArrayList<Pais>();
 
 	@Autowired 
 	PessoaUI pessoaUI;
@@ -41,6 +51,7 @@ public class MDIApplication extends javax.swing.JFrame {
 
     private void initComponents() {
     	setTitle("Controle de Pessoal");
+    	
     	
         desktopPane = new JDesktopPane();
         menuBar = new JMenuBar();
@@ -90,6 +101,11 @@ public class MDIApplication extends javax.swing.JFrame {
         menuBar.add(helpMenu);
 
         setJMenuBar(menuBar);
+        
+        comboPaises = new JComboBox<String>();
+        comboPaises.setBounds(21, 76, 117, 20);
+        preencherPaises();
+        desktopPane.add(comboPaises);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,6 +117,14 @@ public class MDIApplication extends javax.swing.JFrame {
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addComponent(desktopPane, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
         );
+        
+        JLabel lblPais = new JLabel("Pais");
+        lblPais.setBounds(21, 60, 46, 14);
+        desktopPane.add(lblPais);
+        
+  
+        
+
 
         pack();
     }
@@ -112,6 +136,22 @@ public class MDIApplication extends javax.swing.JFrame {
     private void openMenuItemActionPerformed(ActionEvent evt) {
         pessoaUI.setVisible(true);
     }
+    
+	
+	public void preencherPaises() {
+		
+	     listaPaises.add(new Pais("pt-BR","Brasil"));
+	     listaPaises.add(new Pais("fr-FR","France"));
+		
+		defaultComboBoxModel = new DefaultComboBoxModel<String>();
+	     
+		for(Pais p :listaPaises) {
+		defaultComboBoxModel.addElement(p.getNome());
+		}
+
+		 comboPaises.setModel(defaultComboBoxModel);    
+	     comboPaises.setSelectedIndex(0);
+	}
 
     public static void main(String args[]) {
 
@@ -121,7 +161,4 @@ public class MDIApplication extends javax.swing.JFrame {
             }
         });
     }
-
-   
-
 }
